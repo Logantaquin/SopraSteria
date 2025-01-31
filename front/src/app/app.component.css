@@ -1,0 +1,14 @@
+.event-box {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #ffeb3b;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+full-calendar {
+  max-width: 800px; /* Limite la largeur du calendrier */
+  margin: 0 auto;   /* Centre le calendrier horizontalement */
+  height: 600px;    /* Limite la hauteur du calendrier */
+}
+
