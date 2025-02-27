@@ -2,12 +2,12 @@ package com.loganaxel.Model;
 
 public class Salle {
     private String nomSalle;
-    private int Capacite;
+    private int capacite;
     private boolean estDisponible;
 
     public Salle(String nomSalle, int capacite) {
         this.nomSalle = nomSalle;
-        Capacite = capacite;
+        this.capacite = capacite;
         this.estDisponible = true;
     }
 
@@ -16,7 +16,7 @@ public class Salle {
     }
 
     public int getCapacite() {
-        return Capacite;
+        return capacite;
     }
 
     public boolean isEstDisponible() {
@@ -25,5 +25,10 @@ public class Salle {
 
     public void setEstDisponible(boolean estDisponible) {
         this.estDisponible = estDisponible;
+    }
+
+    // Méthode pour réinitialiser la disponibilité de la salle
+    public void reinitialiser() {
+        this.estDisponible = true;
     }
 }
