@@ -1,44 +1,57 @@
 package com.loganaxel.Model;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
-    public class Jour {
-        private Date date;
-        private List<Equipe> equipes; // Plusieurs équipes assignées ce jour-là
-        private List<Salle> salles; // Liste des salles utilisées
+public class Jour {
+    private Date date;
+    private List<Equipe> equipes;
+    private Map<Equipe, List<SalleAffectation>> affectations;
+    private Map<Salle, Integer> placesUtiliseesParSalle; // Suivi des places utilisées
 
-        public Jour(Date date) {
-            this.date = date;
-            this.equipes = new ArrayList<>();
-        }
+    public Jour(Date date) {
+        this.date = date;
+        this.equipes = new ArrayList<>();
+        this.affectations = new HashMap<>();
+        this.placesUtiliseesParSalle = new HashMap<>();
+    }
 
-        public Date getDate() {
-            return date;
-        }
+    public Date getDate() {
+        return date;
+    }
 
-        public void setDate(Date date) {
-            this.date = date;
-        }
+    public List<Equipe> getEquipes() {
+        return equipes;
+    }
 
-        public List<Equipe> getEquipes() {
-            return equipes;
-        }
+    public Map<Equipe, List<SalleAffectation>> getAffectations() {
+        return affectations;
+    }
 
-        public void setEquipes(List<Equipe> equipes) {
-            this.equipes = equipes;
-        }
+    public void ajouterEquipe(Equipe equipe, List<SalleAffectation> sallesAffectees) {
+        equipes.add(equipe);
+        affectations.put(equipe, sallesAffectees);
 
-        public List<Salle> getSalles() {
-            return salles;
-        }
-
-        public void setSalles(List<Salle> salles) {
-            this.salles = salles;
-        }
-
-        public void ajouterEquipe(Equipe equipe){
-            this.equipes.add(equipe);
+        for (SalleAffectation affectation : sallesAffectees) {
+            ajouterPlaceUtilisee(affectation.getSalle(), affectation.getPlacesUtilisees());
         }
     }
+
+    public void ajouterPlaceUtilisee(Salle salle, int placesAffectees) {
+        placesUtiliseesParSalle.put(salle, getPlacesUtilisees(salle) + placesAffectees);
+    }
+
+    public boolean salleDisponible(Salle salle, int placesRequises) {
+        int placesDejaPrises = getPlacesUtilisees(salle);
+        boolean disponible = (placesDejaPrises + placesRequises) <= salle.getCapacite();
+
+        // ✅ FIX : Ajout de logs pour mieux voir ce qui se passe
+       /* System.out.println("Salle " + salle.getNomSalle() + " - Déjà pris : " + placesDejaPrises +
+                ", Demandé : " + placesRequises + ", Disponible : " + disponible);*/
+
+        return disponible;
+    }
+
+    public int getPlacesUtilisees(Salle salle) {
+        return placesUtiliseesParSalle.getOrDefault(salle, 0);
+    }
+}

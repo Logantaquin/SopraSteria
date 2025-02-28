@@ -1,0 +1,22 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Couloir central -->
+  <rect x="250" y="50" width="300" height="500" fill="lightgray" stroke="black" stroke-width="2"/>
+  <text x="400" y="320" font-size="20" text-anchor="middle">Couloir</text>
+
+  <!-- Salles à gauche -->
+  <rect id="salle1" x="50" y="50" width="200" height="150" fill="lightblue" stroke="black" stroke-width="2"/>
+  <text x="150" y="130" font-size="18" text-anchor="middle">Salle 1</text>
+
+  <rect id="salle2" x="50" y="225" width="200" height="150" fill="lightblue" stroke="black" stroke-width="2"/>
+  <text x="150" y="305" font-size="18" text-anchor="middle">Salle 2</text>
+
+  <rect id="salle3" x="50" y="400" width="200" height="150" fill="lightblue" stroke="black" stroke-width="2"/>
+  <text x="150" y="480" font-size="18" text-anchor="middle">Salle 3</text>
+
+  <!-- Salles à droite -->
+  <rect id="salle4" x="550" y="150" width="200" height="175" fill="lightblue" stroke="black" stroke-width="2"/>
+  <text x="650" y="240" font-size="18" text-anchor="middle">Salle 4</text>
+
+  <rect id="salle5" x="550" y="350" width="200" height="175" fill="lightblue" stroke="black" stroke-width="2"/>
+  <text x="650" y="440" font-size="18" text-anchor="middle">Salle 5</text>
+</svg>
