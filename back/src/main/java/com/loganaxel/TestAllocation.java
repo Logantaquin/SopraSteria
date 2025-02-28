@@ -2,6 +2,8 @@ package com.loganaxel;
 
 import com.loganaxel.Model.*;
 import com.loganaxel.Service.AllocationService;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.text.SimpleDateFormat;
 import java.util.*;

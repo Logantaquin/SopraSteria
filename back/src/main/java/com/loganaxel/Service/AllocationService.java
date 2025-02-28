@@ -1,9 +1,11 @@
 package com.loganaxel.Service;
 
 import com.loganaxel.Model.*;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@Service
 public class AllocationService {
 
     public List<Jour> assignerEquipesAuxJours(List<Equipe> equipes, List<Salle> salles, List<Date> jours) {

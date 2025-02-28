@@ -173,6 +173,34 @@
   </div>
 </div>
 
+<h2>Planning des équipes</h2>
+<table border="1">
+  <thead>
+  <tr>
+    <th>Date</th>
+    <th>Équipe</th>
+    <th>Salles</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let jour of planning">
+    <td>{{ jour.date | date:'dd/MM/yyyy' }}</td>
+    <td>
+      <ul>
+        <li *ngFor="let equipe of jour.equipes">{{ equipe.nom }}</li>
+      </ul>
+    </td>
+    <td>
+      <ul>
+        <li *ngFor="let affectation of jour.affectations">
+          {{ affectation.salle.nom }} ({{ affectation.placesUtilisees }} places)
+        </li>
+      </ul>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
 
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
