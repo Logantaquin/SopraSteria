@@ -72,10 +72,10 @@ public class TestAllocation {
         }
     }
 
-    private static List<Utilisateur> creerUtilisateurs(int nombre) {
-        List<Utilisateur> utilisateurs = new ArrayList<>();
+    private static List<String> creerUtilisateurs(int nombre) {
+        List<String> utilisateurs = new ArrayList<>();
         for (int i = 1; i <= nombre; i++) {
-            utilisateurs.add(new Utilisateur("user" + i + "@mail.com", "password"));
+            utilisateurs.add(new Utilisateur("user" + i + "@mail.com", "password", false).getId());
         }
         return utilisateurs;
     }

@@ -4,27 +4,38 @@ import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-@Document(collection = "equipes") //permet d'intégré l'objet dans la collection équipes
+@Document(collection = "equipes") // Spécifie que cette classe représente la collection MongoDB "equipes"
 public class Equipe {
     @Id
-    private String id; //ID généré automatiquement par MongoDB
-    private List<Utilisateur> lesMembres;
+    private String id; // ID unique généré automatiquement par MongoDB
+
+    @Field("nom_equipe") // Personnalise le nom du champ dans la base de données
     private String nomEquipe;
+
+    @Field("nombre_jour_presentiel")
     private int nombreJourPrésentiel;
 
-    public Equipe(String nomEquipe, int nombreJourPrésentiel, List<Utilisateur> lesMembres) {
+    @Field("les_membres") // Stocke une liste des IDs des membres (par exemple)
+    private List<String> lesMembres; // Liste des IDs des Utilisateurs
+
+
+
+    // Constructeur pour initialiser une équipe
+    public Equipe(String nomEquipe, int nombreJourPrésentiel, List<String> lesMembres) {
         this.nomEquipe = nomEquipe;
         this.nombreJourPrésentiel = nombreJourPrésentiel;
         this.lesMembres = lesMembres;
     }
 
-    public List<Utilisateur> getLesMembres() {
-        return lesMembres;
+    // Getters et setters
+    public String getId() {
+        return id;
     }
 
-    public void setLesMembres(List<Utilisateur> lesMembres) {
-        this.lesMembres = lesMembres;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getNomEquipe() {
@@ -41,5 +52,13 @@ public class Equipe {
 
     public void setNombreJourPrésentiel(int nombreJourPrésentiel) {
         this.nombreJourPrésentiel = nombreJourPrésentiel;
+    }
+
+    public List<String> getLesMembres() {
+        return lesMembres;
+    }
+
+    public void setLesMembres(List<String> lesMembres) {
+        this.lesMembres = lesMembres;
     }
 }
