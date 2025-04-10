@@ -2,12 +2,32 @@ package com.loganaxel.Model;
 
 import java.util.*;
 
-public class Jour {
-    private Date date;
-    private List<Equipe> equipes;
-    private Map<Equipe, List<SalleAffectation>> affectations;
-    private Map<Salle, Integer> placesUtiliseesParSalle; // Suivi des places utilisées
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
+@Document(collection = "jours") // Représente la collection MongoDB "jours"
+public class Jour {
+    @Id
+    private String id; // ID unique généré automatiquement par MongoDB
+
+    @Field("date") // Champ pour la date
+    private Date date;
+
+    @Field("equipes") // Stocke une liste des IDs des équipes
+    private List<String> equipes; // IDs des équipes au lieu des objets `Equipe`
+
+    @Field("affectations") // Stocke les affectations sous une structure simplifiée
+    private Map<String, List<String>> affectations; // Map : ID d'équipe -> Liste des IDs de SalleAffectation
+
+    @Field("places_utilisees") // Suivi des places utilisées
+    private Map<String, Integer> placesUtiliseesParSalle; // Map : ID de Salle -> Places utilisées
+
+    // Constructeur par défaut requis par MongoDB
+    public Jour() {
+    }
+
+    // Constructeur pour initialiser la classe
     public Jour(Date date) {
         this.date = date;
         this.equipes = new ArrayList<>();
@@ -15,43 +35,64 @@ public class Jour {
         this.placesUtiliseesParSalle = new HashMap<>();
     }
 
+    // Getters et setters
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public Date getDate() {
         return date;
     }
 
-    public List<Equipe> getEquipes() {
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public List<String> getEquipes() {
         return equipes;
     }
 
-    public Map<Equipe, List<SalleAffectation>> getAffectations() {
+    public void setEquipes(List<String> equipes) {
+        this.equipes = equipes;
+    }
+
+    public Map<String, List<String>> getAffectations() {
         return affectations;
     }
 
-    public void ajouterEquipe(Equipe equipe, List<SalleAffectation> sallesAffectees) {
-        equipes.add(equipe);
-        affectations.put(equipe, sallesAffectees);
-
-        for (SalleAffectation affectation : sallesAffectees) {
-            ajouterPlaceUtilisee(affectation.getSalle(), affectation.getPlacesUtilisees());
-        }
+    public void setAffectations(Map<String, List<String>> affectations) {
+        this.affectations = affectations;
     }
 
-    public void ajouterPlaceUtilisee(Salle salle, int placesAffectees) {
-        placesUtiliseesParSalle.put(salle, getPlacesUtilisees(salle) + placesAffectees);
+    public Map<String, Integer> getPlacesUtiliseesParSalle() {
+        return placesUtiliseesParSalle;
     }
 
-    public boolean salleDisponible(Salle salle, int placesRequises) {
-        int placesDejaPrises = getPlacesUtilisees(salle);
-        boolean disponible = (placesDejaPrises + placesRequises) <= salle.getCapacite();
-
-        // ✅ FIX : Ajout de logs pour mieux voir ce qui se passe
-       /* System.out.println("Salle " + salle.getNomSalle() + " - Déjà pris : " + placesDejaPrises +
-                ", Demandé : " + placesRequises + ", Disponible : " + disponible);*/
-
-        return disponible;
+    public void setPlacesUtiliseesParSalle(Map<String, Integer> placesUtiliseesParSalle) {
+        this.placesUtiliseesParSalle = placesUtiliseesParSalle;
     }
 
-    public int getPlacesUtilisees(Salle salle) {
-        return placesUtiliseesParSalle.getOrDefault(salle, 0);
+    // Méthode pour ajouter une équipe et ses affectations
+    public void ajouterEquipe(String equipeId, List<String> sallesAffecteesIds) {
+        equipes.add(equipeId);
+        affectations.put(equipeId, sallesAffecteesIds);
+    }
+
+    // Méthode pour mettre à jour les places utilisées
+    public void ajouterPlaceUtilisee(String salleId, int placesAffectees) {
+        placesUtiliseesParSalle.put(salleId, getPlacesUtilisees(salleId) + placesAffectees);
+    }
+
+    public boolean salleDisponible(String salleId, int placesRequises, int capaciteSalle) {
+        int placesDejaPrises = getPlacesUtilisees(salleId);
+        return (placesDejaPrises + placesRequises) <= capaciteSalle;
+    }
+
+    public int getPlacesUtilisees(String salleId) {
+        return placesUtiliseesParSalle.getOrDefault(salleId, 0);
     }
 }

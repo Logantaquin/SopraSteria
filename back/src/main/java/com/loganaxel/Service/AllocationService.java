@@ -29,51 +29,55 @@ public class AllocationService {
             Semaine semaineCourante = semaines.get(numeroSemaine);
 
             for (Equipe equipe : equipes) {
-                if (!semaineCourante.equipeAtteintLimite(equipe)) {
-                    List<SalleAffectation> sallesAffectees = allouerSalles(equipe, salles, jourPlanifie);
-                    if (!sallesAffectees.isEmpty()) {
-                        jourPlanifie.ajouterEquipe(equipe, sallesAffectees);
-                        semaineCourante.incrementerJoursTravailles(equipe);
+                if (!semaineCourante.equipeAtteintLimite(equipe.getId(), equipe.getNombreJourPrésentiel())) {
+                    List<String> sallesAffecteesIds = allouerSalles(equipe, salles, jourPlanifie);
+
+                    if (!sallesAffecteesIds.isEmpty()) {
+                        jourPlanifie.ajouterEquipe(equipe.getId(), sallesAffecteesIds);
+                        semaineCourante.incrementerJoursTravailles(equipe.getId());
                     }
                 }
             }
+
             planning.add(jourPlanifie);
+            semaineCourante.ajouterJour(jourPlanifie.getId()); // Ajout du jour à la semaine
         }
+
         return planning;
     }
 
-    private List<SalleAffectation> allouerSalles(Equipe equipe, List<Salle> salles, Jour jour) {
-        List<SalleAffectation> affectationsTemp = new ArrayList<>();
+    private List<String> allouerSalles(Equipe equipe, List<Salle> salles, Jour jour) {
+        List<String> affectationsTempIds = new ArrayList<>();
         int membresRestants = equipe.getLesMembres().size();
         int totalPlacesDisponibles = salles.stream()
-                .filter(salle -> salle.isEstDisponible() && jour.salleDisponible(salle, 1))
-                .mapToInt(salle -> salle.getCapacite() - jour.getPlacesUtilisees(salle))
+                .filter(salle -> salle.isEstDisponible() && jour.salleDisponible(salle.getId(), 1, salle.getCapacite()))
+                .mapToInt(salle -> salle.getCapacite() - jour.getPlacesUtilisees(salle.getId()))
                 .sum();
 
         // ✅ Si on n'a pas assez de place pour toute l'équipe, on annule
         if (totalPlacesDisponibles < membresRestants) {
-            // System.out.println("⚠️ Impossible d'affecter l'équipe " + equipe.getNomEquipe() + " (" + membresRestants + " membres) : pas assez de place !");
             return Collections.emptyList();
         }
 
         for (Salle salle : salles) {
             if (membresRestants <= 0) break;
 
-            if (salle.isEstDisponible() && jour.salleDisponible(salle, 1)) {
-                int placesRestantes = salle.getCapacite() - jour.getPlacesUtilisees(salle);
+            if (salle.isEstDisponible() && jour.salleDisponible(salle.getId(), 1, salle.getCapacite())) {
+                int placesRestantes = salle.getCapacite() - jour.getPlacesUtilisees(salle.getId());
                 int placesAffectees = Math.min(placesRestantes, membresRestants);
 
                 if (placesAffectees > 0) {
-                    affectationsTemp.add(new SalleAffectation(salle, placesAffectees));
+                    affectationsTempIds.add(salle.getId());
+                    jour.ajouterPlaceUtilisee(salle.getId(), placesAffectees);
                     membresRestants -= placesAffectees;
 
-                    if (jour.getPlacesUtilisees(salle) >= salle.getCapacite()) {
+                    if (jour.getPlacesUtilisees(salle.getId()) >= salle.getCapacite()) {
                         salle.setEstDisponible(false);
                     }
                 }
             }
         }
 
-        return affectationsTemp;
+        return affectationsTempIds;
     }
 }
