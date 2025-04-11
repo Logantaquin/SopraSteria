@@ -1,0 +1,58 @@
+<div class="top-bar">
+  <nav class="nav-links">
+    <a routerLink="/planning-admin">Accueil</a>
+    <a routerLink="/compte">Consulter votre compte</a>
+    <a routerLink="/">Déconnexion</a>
+  </nav>
+</div>
+
+<div class="planning-info">
+  <p>Générer les places</p>
+</div>
+
+<div class="dashboard">
+
+  <!-- Conteneur principal flex pour le formulaire -->
+  <div class="calendar-actions">
+    <div class="calendar-wrapper">
+      <img src="assets/bureau.png" class="planning-image"/>
+    </div>
+
+    <div class="actions">
+      <label for="date-debut">Date de début pour la génération</label>
+      <input id="date-debut" type="date"/>
+
+      <label for="date-fin">Date de fin pour la génération</label>
+      <input id="date-fin" type="date"/>
+
+      <p>Choisir les équipes présentes pour ces dates :</p>
+
+      <div class="checkbox-group">
+        <label for="equipe1">
+          <input type="checkbox" id="equipe1" name="equipe" value="equipe1" /> Équipe 1
+        </label>
+        <label for="equipe2">
+          <input type="checkbox" id="equipe2" name="equipe" value="equipe2" /> Équipe 2
+        </label>
+        <label for="equipe3">
+          <input type="checkbox" id="equipe3" name="equipe" value="equipe3" /> Équipe 3
+        </label>
+        <label for="equipe4">
+          <input type="checkbox" id="equipe4" name="equipe" value="equipe4" /> Équipe 4
+        </label>
+      </div>
+
+      <button>Ajouter l'utilisateur</button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="logo-section">
+    <img src="assets/sopra.png" alt="Sopra Steria" class="logo" />
+  </div>
+
+  <div class="triangle-section">
+    <img src="assets/triangle.png" alt="Sopra Steria" class="triangle" />
+  </div>
+</div>

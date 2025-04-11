@@ -1,0 +1,43 @@
+<div class="top-bar">
+  <nav class="nav-links">
+    <a routerLink="/planning">Accueil</a>
+    <a routerLink="/compte">Consulter votre compte</a>
+    <a routerLink="/">Déconnexion</a>
+  </nav>
+</div>
+
+<div class="planning-info">
+  <p>Bonjour <strong>[JohnDoe]</strong> ! Vous êtes affecté aujourd’hui, à la salle <strong>[C]</strong></p>
+  <p>Nous sommes : <strong>[Lundi 31 Mars 2025]</strong></p>
+</div>
+
+<div class="dashboard">
+
+  <!-- Conteneur principal flex pour le calendrier et les boutons -->
+  <div class="calendar-actions">
+    <div class="calendar-wrapper">
+      <!-- Calendrier -->
+      <full-calendar [options]="calendarOptions" class="full-calendar-container"></full-calendar>
+    </div>
+
+    <div class="actions">
+      <button>Consulter votre compte</button>
+      <button>Vue journalière</button>
+      <button [routerLink]="'/'">Se déconnecter</button>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="container">
+  <div class="logo-section">
+    <img src="assets/sopra.png" alt="Sopra Steria" class="logo" />
+  </div>
+
+  <div class="triangle-section">
+    <img src="assets/triangle.png" alt="Sopra Steria" class="triangle" />
+  </div>
+</div>
+
+
