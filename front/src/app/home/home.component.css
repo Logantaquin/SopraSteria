@@ -1,0 +1,121 @@
+/* Zone rouge du haut */
+.top-bar {
+  background-color: red;
+  color: white;
+  text-align: center;
+  padding: 30px;
+  font-size: 18px;
+  margin: -8px;
+}
+
+/* Container principal */
+.container {
+  display: flex;
+  flex-direction: column; /* Aligner les éléments verticalement */
+  justify-content: flex-start; /* Empêcher le contenu de pousser vers le bas */
+  align-items: center; /* Centrer le contenu horizontalement */
+  box-sizing: border-box;
+  padding: 50px 20px;
+  overflow: hidden; /* Désactiver le défilement */
+}
+
+/* Section contenant le formulaire */
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centrer le contenu verticalement */
+  align-items: center; /* Centrer le contenu horizontalement */
+  text-align: center;
+  flex: 1; /* Le formulaire prend tout l'espace disponible */
+}
+
+/* Titre */
+h1 {
+  font-size: 32px;
+  font-weight: normal;
+  margin-bottom: 50px;
+}
+
+form {
+  max-width: 400px; /* Augmenter la largeur maximale */
+  margin: 0 auto;
+  text-align: left; /* Aligner les éléments à gauche dans le formulaire */
+  padding: 20px; /* Ajouter du padding pour espacer le contenu du formulaire */
+  display: flex;
+  flex-direction: column;
+}
+
+
+ .form-group {
+   margin-bottom: 25px; /* Augmenter l'espacement entre les champs */
+ }
+
+ input {
+   width: 100%;
+   padding: 12px; /* Augmenter le padding pour agrandir les champs */
+   padding-left: 24px;
+   margin-top: 8px; /* Espacer un peu les champs */
+   border-radius: 6px; /* Arrondir davantage les bords */
+   border: 1px solid #ccc;
+   font-size: 16px; /* Augmenter la taille de la police dans les champs */
+ }
+
+ button {
+   width: auto;
+   padding: 15px; /* Augmenter le padding pour agrandir le bouton */
+   background-color: red;
+   color: white;
+   border: none;
+   border-radius: 8px; /* Arrondir le bouton */
+   cursor: pointer;
+   font-weight: bold;
+   font-size: 18px; /* Augmenter la taille de la police du bouton */
+   align-self: flex-start;
+   margin-left: 0px;
+ }
+
+ button:hover {
+   background-color: darkred; /* Ajouter un effet au survol du bouton */
+ }
+
+label {
+display: block;
+font-size: 13px;
+font-weight: bold;
+text-align: left;
+}
+
+/* Logo Sopra Steria */
+.logo-section {
+  display: flex;
+  justify-content: flex-start; /* Aligner le logo à gauche */
+  position: absolute; /* Permet de le positionner en bas */
+  bottom: 30px; /* Garder le logo à 30px du bas */
+  left: 20px; /* Positionner le logo à gauche de la page */
+  width: auto; /* Assurer que le logo n'étend pas la largeur */
+}
+
+.logo {
+  height: 33px;
+}
+
+.triangle-section {
+  display: flex;
+  justify-content: flex-start; /* Aligner le logo à gauche */
+  position: absolute; /* Permet de le positionner en bas */
+  bottom: 30px; /* Garder le logo à 30px du bas */
+  right: 20px; /* Positionner le logo à gauche de la page */
+  width: auto; /* Assurer que le logo n'étend pas la largeur */
+}
+
+.triangle {
+  height: 300px;
+}
+
+/* Enlever le défilement */
+body, html {
+  margin: 0px;
+  padding: 0;
+  height: 100vh; /* Limiter la hauteur à la hauteur de l'écran */
+  overflow: hidden; /* Désactiver le défilement */
+}

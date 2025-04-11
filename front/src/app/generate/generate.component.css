@@ -1,0 +1,190 @@
+/* Zone rouge du haut */
+.top-bar {
+  background-color: red;
+  color: white;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px;
+  font-size: 18px;
+  margin: -8px;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  margin-left: 10%;
+  font-size: 16px;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: #ffdada;
+}
+
+/* Container principal */
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 50px 20px;
+  overflow: hidden;
+}
+
+/* Texte du haut */
+.planning-info {
+  margin-left: 20%;
+  text-align: left;
+  margin-bottom: 50px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Dashboard principal */
+.dashboard {
+  padding: 0 40px;
+}
+
+/* Conteneur image + formulaire */
+.calendar-actions {
+  display: flex;
+  align-items: flex-start;
+  gap: 60px;                  /* Plus d’espace entre image et formulaire */
+  padding: 0px;
+}
+
+/* Image */
+.calendar-wrapper {
+  width: 40%;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0px;
+}
+
+.planning-image {
+  width: 100%;
+  max-width: 350px;
+  height: 500px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Formulaire */
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  width: 35%;
+}
+
+.actions label {
+  font-weight: bold;
+  text-align: left;
+  width: 100%;
+  font-size: 14px;
+}
+
+form {
+  max-width: 400px; /* Augmenter la largeur maximale */
+  margin: 0 auto;
+  text-align: left; /* Aligner les éléments à gauche dans le formulaire */
+  padding: 20px; /* Ajouter du padding pour espacer le contenu du formulaire */
+  display: flex;
+  flex-direction: column;
+}
+
+
+ .form-group {
+   margin-bottom: 25px; /* Augmenter l'espacement entre les champs */
+ }
+
+ input, select {
+   width: 100%;
+   padding: 12px; /* Augmenter le padding pour agrandir les champs */
+   padding-left: 24px;
+   margin-top: 8px; /* Espacer un peu les champs */
+   border-radius: 6px; /* Arrondir davantage les bords */
+   border: 1px solid #ccc;
+   font-size: 16px; /* Augmenter la taille de la police dans les champs */
+   margin-bottom: 20px;
+ }
+
+ button {
+   width: auto;
+   padding: 15px; /* Augmenter le padding pour agrandir le bouton */
+   background-color: red;
+   color: white;
+   border: none;
+   border-radius: 8px; /* Arrondir le bouton */
+   cursor: pointer;
+   font-weight: bold;
+   font-size: 18px; /* Augmenter la taille de la police du bouton */
+   align-self: flex-start;
+   margin-left: 0px;
+ }
+
+ button:hover {
+   background-color: darkred; /* Ajouter un effet au survol du bouton */
+ }
+
+ label {
+ display: block;
+ font-size: 13px;
+ font-weight: bold;
+ text-align: left;
+ }
+
+/* Logo Sopra Steria */
+.logo-section {
+  position: absolute;
+  bottom: 30px;
+  left: 20px;
+}
+
+.logo {
+  height: 33px;
+}
+
+.triangle-section {
+  position: absolute;
+  bottom: 30px;
+  right: 20px;
+}
+
+.triangle {
+  height: 200px;
+}
+
+/* Groupement des checkboxes */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Espacement vertical entre les lignes */
+}
+
+/* Alignement des checkboxes avec leur label */
+.checkbox-group label {
+  font-size: 14px;
+  align-items: center;        /* Aligne la case à cocher et le texte sur la même ligne */
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;        /* Éviter que le texte soit cassé en plusieurs lignes */
+  line-height: 1.5;           /* Alignement du texte et de la case à cocher */
+}
+
+/* Style pour les checkboxes */
+.checkbox-group input {
+  margin-left: 5px;
+  }
+
+/* Reset */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
