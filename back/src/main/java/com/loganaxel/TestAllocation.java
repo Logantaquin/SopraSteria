@@ -1,123 +1,102 @@
 package com.loganaxel;
 
 import com.loganaxel.Model.*;
-import com.loganaxel.Service.AllocationService;
-import java.text.SimpleDateFormat;
+import com.loganaxel.Repository.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+
+
 import java.util.*;
 
-public class TestAllocation {
+@SpringBootApplication
+@ComponentScan(basePackages = "com.loganaxel")
+public class TestAllocation implements CommandLineRunner {
+
+    @Autowired
+    private SalleRepository salleRepository;
+
+    @Autowired
+    private EquipeRepository equipeRepository;
+
+    @Autowired
+    private SalleAffectationRepository salleAffectationRepository;
+
+    @Autowired
+    private JourRepository jourRepository;
+
+    @Autowired
+    private SemaineRepository semaineRepository;
+
     public static void main(String[] args) {
-        AllocationService service = new AllocationService();
-
-        // Création des salles
-        List<Salle> salles = creerSalles();
-
-        System.out.println("Salles créées : " + salles.size());
-
-        // Création des équipes
-        List<Equipe> equipes = creerEquipes();
-
-        System.out.println("Équipes créées : " + equipes.size());
-
-        // Génération des jours ouvrés entre deux dates
-        List<Date> semaine = genererDates("06/01/2025", "24/01/2025"); // Exclut les week-ends et jours fériés
-
-        System.out.println("Jours générés : " + semaine.size());
-
-        // Lancement de l'algorithme
-        List<Jour> planning = service.assignerEquipesAuxJours(equipes, salles, semaine);
-
-        // Affichage du planning
-        afficherPlanning(planning);
+        SpringApplication.run(TestAllocation.class, args);
     }
 
-    private static List<Salle> creerSalles() {
-        List<Salle> salles = new ArrayList<>();
-        salles.add(new Salle("Salle A", 60));
-        salles.add(new Salle("Salle B", 60));
-        salles.add(new Salle("Salle C", 40));
-        return salles;
+    @Override
+    public void run(String... args) throws Exception {
+        // Créer des salles
+        Salle salle1 = new Salle("Salle 1", 50);
+        Salle salle2 = new Salle("Salle 2", 30);
+        salleRepository.save(salle1);
+        salleRepository.save(salle2);
+
+        // Créer des équipes avec les nouveaux attributs
+        Equipe equipe1 = new Equipe("Equipe 1", 5, Arrays.asList("utilisateur1", "utilisateur2", "utilisateur3"));
+        Equipe equipe2 = new Equipe("Equipe 2", 6, Arrays.asList("utilisateur4", "utilisateur5"));
+        equipeRepository.save(equipe1);
+        equipeRepository.save(equipe2);
+
+        // Créer une affectation pour chaque salle
+        SalleAffectation affectation1 = new SalleAffectation(salle1.getId(), 0);
+        SalleAffectation affectation2 = new SalleAffectation(salle2.getId(), 0);
+        salleAffectationRepository.save(affectation1);
+        salleAffectationRepository.save(affectation2);
+
+        // Créer un jour pour l'affectation
+        Jour jour = new Jour(new Date());
+        jour.ajouterEquipe(equipe1.getId(), Arrays.asList(affectation1.getId()));
+        jour.ajouterEquipe(equipe2.getId(), Arrays.asList(affectation2.getId()));
+        jour.ajouterPlaceUtilisee(salle1.getId(), 20);
+        jour.ajouterPlaceUtilisee(salle2.getId(), 10);
+        jourRepository.save(jour);
+
+        // Créer une semaine
+        Semaine semaine = new Semaine(1);
+        semaine.ajouterJour(jour.getId());
+        semaineRepository.save(semaine);
+
+        // Affichage des résultats dans le terminal
+        afficherAllocation();
     }
 
-    private static List<Equipe> creerEquipes() {
-        List<Equipe> equipes = new ArrayList<>();
-        equipes.add(new Equipe("Equipe 1", 3, creerUtilisateurs(70))); // 70 membres, 3 jours/semaine
-        equipes.add(new Equipe("Equipe 2", 2, creerUtilisateurs(85))); // 85 membres, 2 jours/semaine
-        equipes.add(new Equipe("Equipe 3", 3, creerUtilisateurs(80))); // 80 membres, 3 jours/semaine
-        return equipes;
-    }
+    private void afficherAllocation() {
+        System.out.println("Affichage des allocations :");
 
-    private static void afficherPlanning(List<Jour> planning) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        // Récupérer les jours
+        List<Jour> jours = jourRepository.findAll();
 
-        for (Jour jour : planning) {
-            System.out.println(dateFormat.format(jour.getDate()) + " :");
-
-            for (Map.Entry<String, List<String>> entry : jour.getAffectations().entrySet()) {
-                String equipeId = entry.getKey();
-                List<String> sallesAffecteesIds = entry.getValue();
-
-                // Affichage des salles affectées
-                System.out.print("Équipe ID " + equipeId + " : ");
-                boolean first = true;
-
-                for (String salleId : sallesAffecteesIds) {
-                    if (!first) {
-                        System.out.print(" + ");
+        for (Jour j : jours) {
+            System.out.println("Date du jour : " + j.getDate());
+            for (String equipeId : j.getEquipes()) {
+                Equipe equipe = equipeRepository.findById(equipeId).orElse(null);
+                if (equipe != null) {
+                    System.out.println("Equipe : " + equipe.getNomEquipe());
+                    List<String> sallesAffectees = j.getAffectations().get(equipeId);
+                    for (String salleId : sallesAffectees) {
+                        SalleAffectation affectation = salleAffectationRepository.findById(salleId).orElse(null);
+                        if (affectation != null) {
+                            Salle salle = salleRepository.findById(affectation.getSalleId()).orElse(null);
+                            if (salle != null) {
+                                System.out.println("Salle : " + salle.getNomSalle() + " (places utilisées : " + affectation.getPlacesUtilisees() + ")");
+                            } else {
+                                System.out.println("Salle : introuvable (ID = " + affectation.getId() + ")");
+                            }
+                        }
                     }
-                    first = false;
-
-                    // Simulation d'obtention des détails de la salle par ID
-                    Salle salle = obtenirDetailsSalle(salleId);
-                    System.out.print(salle.getNomSalle() + " (" + salle.getCapacite() + ")");
                 }
-                System.out.println();
             }
-            System.out.println();  // Ajouter une ligne vide pour séparer les jours
         }
-    }
-
-    private static Salle obtenirDetailsSalle(String salleId) {
-        // Cette méthode peut être modifiée pour récupérer les informations de la salle depuis MongoDB
-        // Ici, elle est simulée pour retourner un objet Salle en fonction de l'ID (Exemple simplifié)
-        return new Salle("Salle simulée " + salleId, 50); // Exemple de salle simulée
-    }
-
-    private static List<String> creerUtilisateurs(int nombre) {
-        List<String> utilisateurs = new ArrayList<>();
-        for (int i = 1; i <= nombre; i++) {
-            // Simulation de création d'utilisateur avec ID
-            Utilisateur utilisateur = new Utilisateur("user" + i + "@mail.com", "password", null);
-            utilisateurs.add(utilisateur.getId());
-        }
-        return utilisateurs;
-    }
-
-    private static List<Date> genererDates(String startDate, String endDate) {
-        List<Date> dates = new ArrayList<>();
-        Set<String> joursFeries = new HashSet<>(Arrays.asList("01/01/2025", "17/04/2025", "01/05/2025", "08/05/2025", "14/07/2025", "15/08/2025", "01/11/2025", "11/11/2025", "25/12/2025"));
-
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(sdf.parse(startDate));
-            Date fin = sdf.parse(endDate);
-
-            while (!cal.getTime().after(fin)) {
-                int jourSemaine = cal.get(Calendar.DAY_OF_WEEK);
-                String dateString = sdf.format(cal.getTime());
-
-                // Exclure les week-ends (samedi = 7, dimanche = 1) et jours fériés
-                if (jourSemaine != Calendar.SATURDAY && jourSemaine != Calendar.SUNDAY && !joursFeries.contains(dateString)) {
-                    dates.add(cal.getTime());
-                }
-
-                cal.add(Calendar.DAY_OF_MONTH, 1);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return dates;
     }
 }

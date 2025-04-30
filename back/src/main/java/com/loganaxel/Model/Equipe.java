@@ -19,9 +19,13 @@ public class Equipe {
 
     @Field("les_membres") // Stocke une liste des IDs des membres (par exemple)
     private List<String> lesMembres; // Liste des IDs des Utilisateurs
+    
 
+    public Equipe() {
+        // Constructeur par défaut requis par Spring Data
+    }
 
-
+    
     // Constructeur pour initialiser une équipe
     public Equipe(String nomEquipe, int nombreJourPrésentiel, List<String> lesMembres) {
         this.nomEquipe = nomEquipe;
