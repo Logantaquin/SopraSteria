@@ -5,6 +5,8 @@ import { AppComponent } from './app.component';
 import { FullCalendarModule } from '@fullcalendar/angular';  // Pour le calendrier FullCalendar
 import { HttpClientModule } from '@angular/common/http';  // Pour l'injection d'HttpClient
 import { CommonModule } from '@angular/common'; // Pour utiliser CommonModule dans un module
+import { AppRoutingModule } from './app-routing.module';
+import { RouterModule } from '@angular/router'; // Importer RouterModule ici
 
 // Définir les routes de l'application
 const routes: Routes = [
@@ -21,6 +23,8 @@ const routes: Routes = [
     CommonModule,   // Pour utiliser des directives comme ngIf, ngFor
     HttpClientModule, // Nécessaire pour l'injection d'HttpClient
     FullCalendarModule, // Pour FullCalendar
+    AppRoutingModule,
+    RouterModule,
     RouterModule.forRoot(routes), // Pour activer le routage dans ton application
   ],
   providers: [],
