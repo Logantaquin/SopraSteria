@@ -4,17 +4,16 @@
 
 <div class="container">
   <div class="content">
-    <h1>Bienvenue !<br>
-    Connectez-vous pour consulter le planning de la semaine !</h1>
+    <h1>Bienvenue !<br> Connectez-vous pour consulter le planning de la semaine !</h1>
 
-    <form>
+    <form (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label>Votre adresse mail</label>
-        <input type="email" placeholder="JohnDoe@sopraSteria.com" />
+        <input type="email" [(ngModel)]="email" name="email" placeholder="JohnDoe@sopraSteria.com" required />
       </div>
       <div class="form-group">
         <label>Votre mot de passe</label>
-        <input type="password" placeholder="************" />
+        <input type="password" [(ngModel)]="password" name="password" placeholder="************" required />
       </div>
       <button type="submit">Se connecter</button>
     </form>
@@ -28,5 +27,3 @@
     <img src="assets/triangle.png" alt="Sopra Steria" class="triangle" />
   </div>
 </div>
-
-

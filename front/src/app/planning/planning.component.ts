@@ -1,28 +1,129 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router'; // Importer RouterModule ici
-
+import { RouterModule } from '@angular/router';
+import { PlanningService } from '../services/planning.service';
 
 @Component({
   selector: 'app-planning',
-  imports: [FullCalendarModule, CommonModule,RouterModule, ],
+  standalone: true,
+  imports: [FullCalendarModule, CommonModule, RouterModule],
   templateUrl: './planning.component.html',
-  styleUrl: './planning.component.css'
+  styleUrls: ['./planning.component.css']
 })
-export class PlanningComponent {
+export class PlanningComponent implements OnInit {
+  calendarOptions: any = {
+    plugins: [dayGridPlugin],
+    initialView: 'dayGridMonth',
+    events: [],
+    eventMouseEnter: this.onEventMouseEnter.bind(this),
+    eventMouseLeave: this.onEventMouseLeave.bind(this)
+  };
 
-  selectedDate: string | null = null;  // Pour garder la trace de la date sélectionnée
+  equipesMap: Map<string, string> = new Map(); // ID -> Nom
+  sallesMap: Map<string, string> = new Map();  // ID -> Nom
+  tooltipEl: HTMLElement | null = null;
 
-    calendarOptions = {
-      plugins: [dayGridPlugin],
-      initialView: 'dayGridMonth', // Vue par défaut : mois
-      events: [ // Liste des événements
-        { title: 'Équipe A', date: '2025-01-31' },
-        { title: 'Équipe B', date: '2025-02-05' },
-        { title: 'Réunion', date: '2025-02-10' }
-      ],
-       //dateClick: this.handleDateClick.bind(this)  // Gestion du clic sur un jour
-    };
+  currentEquipeId: string = ''; // L'ID de l'équipe de l'utilisateur
+
+  constructor(private planningService: PlanningService) {}
+
+  ngOnInit(): void {
+    // Supposons que l'ID de l'équipe de l'utilisateur est stocké dans le localStorage
+    this.currentEquipeId = localStorage.getItem('equipeId') || ''; // Utilise une méthode appropriée pour récupérer l'ID
+
+    if (this.currentEquipeId) {
+      this.loadPlanningData(); // Si on a un ID d'équipe, on charge les données
+    } else {
+      console.error("L'ID de l'équipe n'a pas été trouvé.");
+    }
+  }
+
+  loadPlanningData(): void {
+    this.planningService.getEquipes().subscribe(equipes => {
+      equipes.forEach(e => this.equipesMap.set(e.id, e.nomEquipe));
+
+      this.planningService.getSalles().subscribe(salles => {
+        salles.forEach(s => this.sallesMap.set(s.id, s.nomSalle));
+
+        this.planningService.getPlanning().subscribe(planning => {
+          const filtered = this.filterPlanningForEquipe(planning, this.currentEquipeId);
+          const events = this.transformPlanningToEvents(filtered);
+          this.calendarOptions.events = events;
+        });
+      });
+    });
+  }
+
+  filterPlanningForEquipe(planning: any[], equipeId: string): any[] {
+    return planning
+      .filter(jour => jour.affectations && jour.affectations[equipeId])
+      .map(jour => {
+        return {
+          ...jour,
+          affectations: {
+            [equipeId]: jour.affectations[equipeId]
+          }
+        };
+      });
+  }
+
+  transformPlanningToEvents(planning: any[]): any[] {
+    const events: any[] = [];
+
+    planning.forEach(jour => {
+      const date = jour.date;
+      const affectations = jour.affectations;
+
+      Object.keys(affectations).forEach(equipeId => {
+        const equipeNom = this.equipesMap.get(equipeId) || equipeId;
+        const affectationsDetail = affectations[equipeId];
+
+        const salleInfos = affectationsDetail.map((a: any) => {
+          const nomSalle = this.sallesMap.get(a.salleId) || a.salleId;
+          return `${nomSalle} (${a.placesUtilisees})`;
+        });
+
+        const title = `${equipeNom} - ${salleInfos.join(', ')}`;
+
+        events.push({
+          title,
+          start: date,
+          allDay: true,
+          extendedProps: {
+            salleInfos: salleInfos.join(', ')
+          }
+        });
+      });
+    });
+
+    return events;
+  }
+
+  onEventMouseEnter(info: any): void {
+    const tooltip = document.createElement('div');
+    tooltip.className = 'custom-tooltip';
+    tooltip.style.position = 'absolute';
+    tooltip.style.zIndex = '10001';
+    tooltip.style.background = '#fff';
+    tooltip.style.border = '1px solid #ccc';
+    tooltip.style.padding = '5px';
+    tooltip.style.boxShadow = '0 0 5px rgba(0,0,0,0.2)';
+    tooltip.innerText = info.event.extendedProps.salleInfos;
+
+    document.body.appendChild(tooltip);
+    this.tooltipEl = tooltip;
+
+    const rect = info.el.getBoundingClientRect();
+    tooltip.style.top = `${rect.top + window.scrollY - 40}px`;
+    tooltip.style.left = `${rect.left + window.scrollX}px`;
+  }
+
+  onEventMouseLeave(): void {
+    if (this.tooltipEl) {
+      this.tooltipEl.remove();
+      this.tooltipEl = null;
+    }
+  }
 }

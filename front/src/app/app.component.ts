@@ -7,10 +7,11 @@ import { Component, OnInit } from '@angular/core';
 import { PlanningService } from './services/planning.service';
 import { HttpClientModule } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterModule,FullCalendarModule,CommonModule,HttpClientModule],
+  imports: [RouterModule,FullCalendarModule,CommonModule,HttpClientModule,FormsModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

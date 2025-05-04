@@ -1,5 +1,6 @@
 package com.loganaxel.Controllers;
 
+import com.loganaxel.Model.Equipe;
 import com.loganaxel.Model.Utilisateur;
 import com.loganaxel.Service.UtilisateurService;
 import org.springframework.web.bind.annotation.GetMapping;

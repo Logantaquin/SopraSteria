@@ -18,7 +18,7 @@ public class Jour {
     private List<String> equipes; // IDs des équipes au lieu des objets `Equipe`
 
     @Field("affectations") // Stocke les affectations sous une structure simplifiée
-    private Map<String, List<String>> affectations; // Map : ID d'équipe -> Liste des IDs de SalleAffectation
+    private Map<String, List<SalleAffectation>> affectations; // Map : ID d'équipe -> Liste des IDs de SalleAffectation
 
     @Field("places_utilisees") // Suivi des places utilisées
     private Map<String, Integer> placesUtiliseesParSalle; // Map : ID de Salle -> Places utilisées
@@ -60,11 +60,11 @@ public class Jour {
         this.equipes = equipes;
     }
 
-    public Map<String, List<String>> getAffectations() {
+    public Map<String, List<SalleAffectation>> getAffectations() {
         return affectations;
     }
 
-    public void setAffectations(Map<String, List<String>> affectations) {
+    public void setAffectations(Map<String, List<SalleAffectation>> affectations) {
         this.affectations = affectations;
     }
 
@@ -77,14 +77,18 @@ public class Jour {
     }
 
     // Méthode pour ajouter une équipe et ses affectations
-    public void ajouterEquipe(String equipeId, List<String> sallesAffecteesIds) {
+    public void ajouterEquipe(String equipeId, List<SalleAffectation> sallesAffectees) {
         equipes.add(equipeId);
-        affectations.put(equipeId, sallesAffecteesIds);
+        affectations.put(equipeId, sallesAffectees);
+
+        for (SalleAffectation affectation : sallesAffectees) {
+            ajouterPlaceUtilisee(affectation.getSalleId(), affectation.getPlacesUtilisees());
+        }
+
     }
 
-    // Méthode pour mettre à jour les places utilisées
-    public void ajouterPlaceUtilisee(String salleId, int placesAffectees) {
-        placesUtiliseesParSalle.put(salleId, getPlacesUtilisees(salleId) + placesAffectees);
+    public void ajouterPlaceUtilisee(String id, int placesAffectees) {
+        placesUtiliseesParSalle.put(id, getPlacesUtilisees(id) + placesAffectees);
     }
 
     public boolean salleDisponible(String salleId, int placesRequises, int capaciteSalle) {

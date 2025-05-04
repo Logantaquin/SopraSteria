@@ -1,18 +1,21 @@
-C:\Users\Noufe\Desktop\M1 MIAGE\SopraSteria\back\src\main\java\com\loganaxel\Controllers\UtilisateurController.java
-C:\Users\Noufe\Desktop\M1 MIAGE\SopraSteria\back\src\main\java\com\loganaxel\Repository\SalleAffectationRepository.java
-C:\Users\Noufe\Desktop\M1 MIAGE\SopraSteria\back\src\main\java\com\loganaxel\Model\Utilisateur.java
-C:\Users\Noufe\Desktop\M1 MIAGE\SopraSteria\back\src\main\java\com\loganaxel\Repository\UtilisateurRepository.java
-C:\Users\Noufe\Desktop\M1 MIAGE\SopraSteria\back\src\main\java\com\loganaxel\Model\Salle.java
-C:\Users\Noufe\Desktop\M1 MIAGE\SopraSteria\back\src\main\java\com\loganaxel\Model\Semaine.java
-C:\Users\Noufe\Desktop\M1 MIAGE\SopraSteria\back\src\main\java\com\loganaxel\Repository\SalleRepository.java
-C:\Users\Noufe\Desktop\M1 MIAGE\SopraSteria\back\src\main\java\com\loganaxel\Service\AllocationService.java
-C:\Users\Noufe\Desktop\M1 MIAGE\SopraSteria\back\src\main\java\com\loganaxel\WebConfig.java
-C:\Users\Noufe\Desktop\M1 MIAGE\SopraSteria\back\src\main\java\com\loganaxel\Model\Equipe.java
-C:\Users\Noufe\Desktop\M1 MIAGE\SopraSteria\back\src\main\java\com\loganaxel\Controllers\PlanningController.java
-C:\Users\Noufe\Desktop\M1 MIAGE\SopraSteria\back\src\main\java\com\loganaxel\Model\SalleAffectation.java
-C:\Users\Noufe\Desktop\M1 MIAGE\SopraSteria\back\src\main\java\com\loganaxel\Service\UtilisateurService.java
-C:\Users\Noufe\Desktop\M1 MIAGE\SopraSteria\back\src\main\java\com\loganaxel\Model\Jour.java
-C:\Users\Noufe\Desktop\M1 MIAGE\SopraSteria\back\src\main\java\com\loganaxel\Main.java
-C:\Users\Noufe\Desktop\M1 MIAGE\SopraSteria\back\src\main\java\com\loganaxel\Repository\EquipeRepository.java
-C:\Users\Noufe\Desktop\M1 MIAGE\SopraSteria\back\src\main\java\com\loganaxel\Repository\SemaineRepository.java
-C:\Users\Noufe\Desktop\M1 MIAGE\SopraSteria\back\src\main\java\com\loganaxel\Repository\JourRepository.java
+C:\Users\pinhe\IdeaProjects\Sopra\back\src\main\java\com\loganaxel\Controllers\EquipeController.java
+C:\Users\pinhe\IdeaProjects\Sopra\back\src\main\java\com\loganaxel\Controllers\PlanningController.java
+C:\Users\pinhe\IdeaProjects\Sopra\back\src\main\java\com\loganaxel\Controllers\UtilisateurController.java
+C:\Users\pinhe\IdeaProjects\Sopra\back\src\main\java\com\loganaxel\Main.java
+C:\Users\pinhe\IdeaProjects\Sopra\back\src\main\java\com\loganaxel\Model\Equipe.java
+C:\Users\pinhe\IdeaProjects\Sopra\back\src\main\java\com\loganaxel\Model\Jour.java
+C:\Users\pinhe\IdeaProjects\Sopra\back\src\main\java\com\loganaxel\Model\Salle.java
+C:\Users\pinhe\IdeaProjects\Sopra\back\src\main\java\com\loganaxel\Model\SalleAffectation.java
+C:\Users\pinhe\IdeaProjects\Sopra\back\src\main\java\com\loganaxel\Model\Semaine.java
+C:\Users\pinhe\IdeaProjects\Sopra\back\src\main\java\com\loganaxel\Model\Utilisateur.java
+C:\Users\pinhe\IdeaProjects\Sopra\back\src\main\java\com\loganaxel\Repository\EquipeRepository.java
+C:\Users\pinhe\IdeaProjects\Sopra\back\src\main\java\com\loganaxel\Repository\JourRepository.java
+C:\Users\pinhe\IdeaProjects\Sopra\back\src\main\java\com\loganaxel\Repository\SalleAffectationRepository.java
+C:\Users\pinhe\IdeaProjects\Sopra\back\src\main\java\com\loganaxel\Repository\SalleRepository.java
+C:\Users\pinhe\IdeaProjects\Sopra\back\src\main\java\com\loganaxel\Repository\SemaineRepository.java
+C:\Users\pinhe\IdeaProjects\Sopra\back\src\main\java\com\loganaxel\Repository\UtilisateurRepository.java
+C:\Users\pinhe\IdeaProjects\Sopra\back\src\main\java\com\loganaxel\Service\AllocationService.java
+C:\Users\pinhe\IdeaProjects\Sopra\back\src\main\java\com\loganaxel\Service\EquipeService.java
+C:\Users\pinhe\IdeaProjects\Sopra\back\src\main\java\com\loganaxel\Service\UtilisateurService.java
+C:\Users\pinhe\IdeaProjects\Sopra\back\src\main\java\com\loganaxel\TestAllocation.java
+C:\Users\pinhe\IdeaProjects\Sopra\back\src\main\java\com\loganaxel\WebConfig.java

@@ -13,4 +13,17 @@ export class PlanningService {
   getPlanning(): Observable<any> {
     return this.http.get<any>(this.apiUrl);
   }
+
+  getPlanningPourEquipe(equipeId: string): Observable<any[]> {
+    return this.http.get<any[]>(`http://localhost:8080/api/planning/equipe/${equipeId}`);
+  }
+
+  getEquipes(): Observable<any[]> {
+    return this.http.get<any[]>('http://localhost:8080/api/equipes'); // adapte le chemin
+  }
+
+  getSalles(): Observable<any[]> {
+    return this.http.get<any[]>('http://localhost:8080/api/salles'); // adapte l'URL si besoin
+  }
+
 }

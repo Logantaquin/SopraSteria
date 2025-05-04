@@ -3,7 +3,13 @@ package com.loganaxel.Controllers;
 import com.loganaxel.Model.Jour;
 import com.loganaxel.Model.Salle;
 import com.loganaxel.Model.Equipe;
+import com.loganaxel.Model.SalleAffectation;
+import com.loganaxel.Repository.EquipeRepository;
+import com.loganaxel.Repository.JourRepository;
+import com.loganaxel.Repository.SalleAffectationRepository;
+import com.loganaxel.Repository.SalleRepository;
 import com.loganaxel.Service.AllocationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,22 +23,33 @@ public class PlanningController {
 
     private final AllocationService allocationService;
 
+    @Autowired
+    private EquipeRepository equipeRepository;
+
+    @Autowired
+    private SalleRepository salleRepository;
+
+    @Autowired
+    private JourRepository jourRepository;
+
+    @Autowired
+    private SalleAffectationRepository salleAffectationRepository;
+
     public PlanningController(AllocationService allocationService) {
         this.allocationService = allocationService;
     }
 
     @GetMapping("/generer")
     public List<Jour> genererPlanning() {
-        // Création des salles (simulée avec IDs pour MongoDB)
-        List<Salle> salles = creerSalles();
+        List<Equipe> equipes = equipeRepository.findAll();
 
-        // Création des équipes (simulée avec IDs pour MongoDB)
-        List<Equipe> equipes = creerEquipes();
+        List<Salle> salles = salleRepository.findAll();
 
         // Génération des jours ouvrés (utilisation des dates simulées)
         List<Date> jours = genererDates("06/01/2025", "24/01/2025");
 
         // Lancement de l'algorithme d'affectation
+
         return allocationService.assignerEquipesAuxJours(equipes, salles, jours);
     }
 
@@ -94,5 +111,41 @@ public class PlanningController {
         }
 
         return dates;
+    }
+
+    private List<String> allouerSalles(Equipe equipe, List<Salle> salles, Jour jour) {
+        List<String> affectationsTempIds = new ArrayList<>();
+        int membresRestants = equipe.getLesMembres().size();
+        int totalPlacesDisponibles = salles.stream()
+                .filter(salle -> salle.isEstDisponible() && jour.salleDisponible(salle.getId(), 1, salle.getCapacite()))
+                .mapToInt(salle -> salle.getCapacite() - jour.getPlacesUtilisees(salle.getId()))
+                .sum();
+
+        // ✅ Si on n'a pas assez de place pour toute l'équipe, on annule
+        if (totalPlacesDisponibles < membresRestants) {
+            return Collections.emptyList();
+        }
+
+        for (Salle salle : salles) {
+            if (membresRestants <= 0) break;
+
+            if (salle.isEstDisponible() && jour.salleDisponible(salle.getId(), 1, salle.getCapacite())) {
+                int placesRestantes = salle.getCapacite() - jour.getPlacesUtilisees(salle.getId());
+                int placesAffectees = Math.min(placesRestantes, membresRestants);
+
+                if (placesAffectees > 0) {
+                    SalleAffectation salleAf = new SalleAffectation(salle.getId(),placesAffectees);
+                    SalleAffectation salleSaved = salleAffectationRepository.save(salleAf);
+                    affectationsTempIds.add(salleSaved.getId());
+                    membresRestants -= placesAffectees;
+
+                    if (jour.getPlacesUtilisees(salle.getId()) >= salle.getCapacite()) {
+                        salle.setEstDisponible(false);
+                    }
+                }
+            }
+        }
+
+        return affectationsTempIds;
     }
 }

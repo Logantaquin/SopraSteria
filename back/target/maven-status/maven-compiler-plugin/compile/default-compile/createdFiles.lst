@@ -6,13 +6,16 @@ com\loganaxel\Model\Salle.class
 com\loganaxel\Repository\SalleAffectationRepository.class
 com\loganaxel\Controllers\UtilisateurController.class
 com\loganaxel\Main.class
+com\loganaxel\TestAllocation.class
 com\loganaxel\Model\Equipe.class
 com\loganaxel\Repository\UtilisateurRepository.class
 com\loganaxel\WebConfig.class
 com\loganaxel\Model\Semaine.class
 com\loganaxel\Service\AllocationService.class
 com\loganaxel\Repository\EquipeRepository.class
+com\loganaxel\Controllers\EquipeController.class
 com\loganaxel\Service\UtilisateurService.class
 com\loganaxel\Model\Utilisateur.class
 com\loganaxel\Repository\SalleRepository.class
+com\loganaxel\Service\EquipeService.class
 com\loganaxel\Repository\SemaineRepository.class

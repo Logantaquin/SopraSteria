@@ -55,4 +55,11 @@ public class Utilisateur {
         this.motDePasse = motDePasse;
     }
 
+    public Boolean getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        this.admin = admin;
+    }
 }
