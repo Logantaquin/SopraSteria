@@ -20,23 +20,23 @@
 
     <div class="actions">
       <label for="mail-utilisateur">Mail de l'utilisateur</label>
-      <input id="mail-utilisateur" type="email" placeholder="Ex: utilisateur@exemple.com" />
+      <input [(ngModel)]="email" id="mail-utilisateur" type="email" placeholder="Ex: utilisateur@exemple.com" />
 
       <label for="mot-de-passe">Mot de passe</label>
-      <input id="mot-de-passe" type="password" placeholder="Mot de passe" />
+      <input [(ngModel)]="password" id="mot-de-passe" type="password" placeholder="Mot de passe" />
 
       <label for="confirmer-mot-de-passe">Confirmer le mot de passe</label>
-      <input id="confirmer-mot-de-passe" type="password" placeholder="Confirmer mot de passe" />
+      <input [(ngModel)]="confirmPassword" id="confirmer-mot-de-passe" type="password" placeholder="Confirmer mot de passe" />
 
       <label for="equipe">Équipe</label>
-      <select id="equipe">
+      <select [(ngModel)]="equipe" id="equipe">
         <option value="equipe1">Équipe 1</option>
         <option value="equipe2">Équipe 2</option>
         <option value="equipe3">Équipe 3</option>
         <option value="equipe4">Équipe 4</option>
       </select>
 
-      <button>Ajouter l'utilisateur</button>
+      <button (click)="ajouterUtilisateur()">Ajouter l'utilisateur</button>
     </div>
   </div>
 </div>
