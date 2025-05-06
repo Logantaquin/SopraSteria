@@ -1,7 +1,6 @@
 <div class="top-bar">
   <nav class="nav-links">
     <a routerLink="/planning-admin">Accueil</a>
-    <a routerLink="/compte">Consulter votre compte</a>
     <a routerLink="/">Déconnexion</a>
   </nav>
 </div>
@@ -21,10 +20,9 @@
     </div>
 
     <div class="actions">
-      <button>Consulter votre compte</button>
-      <button>Vue journalière</button>
       <button [routerLink]="'/'">Se déconnecter</button>
       <button [routerLink]="'/add-user'">Ajouter un Utilisateur</button>
+      <button [routerLink]="'/add-equipe'">Ajouter une Equipe</button>
       <button [routerLink]="'/add-bureau'">Ajouter une Salle</button>
       <button [routerLink]="'/generate'">Générer des places</button>
     </div>

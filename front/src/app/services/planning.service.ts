@@ -6,24 +6,31 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class PlanningService {
-  private apiUrl = 'http://localhost:8080/api/planning/generer'; // URL du backend
+  private apiUrl = 'http://localhost:8080/api';
 
   constructor(private http: HttpClient) {}
 
   getPlanning(): Observable<any> {
-    return this.http.get<any>(this.apiUrl);
+    return this.http.get<any>(`${this.apiUrl}/planning`);
   }
 
   getPlanningPourEquipe(equipeId: string): Observable<any[]> {
-    return this.http.get<any[]>(`http://localhost:8080/api/planning/equipe/${equipeId}`);
+    return this.http.get<any[]>(`${this.apiUrl}/planning/equipe/${equipeId}`);
   }
 
   getEquipes(): Observable<any[]> {
-    return this.http.get<any[]>('http://localhost:8080/api/equipes'); // adapte le chemin
+    return this.http.get<any[]>(`${this.apiUrl}/equipes`);
   }
 
   getSalles(): Observable<any[]> {
-    return this.http.get<any[]>('http://localhost:8080/api/salles'); // adapte l'URL si besoin
+    return this.http.get<any[]>(`${this.apiUrl}/salles`);
   }
 
+  generatePlanning(requestBody: {
+    dateDebut: string;
+    dateFin: string;
+    equipeIds: string[];
+  }): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/planning/generer`, requestBody);
+  }
 }

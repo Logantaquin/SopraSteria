@@ -1,5 +1,6 @@
 package com.loganaxel.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -23,6 +24,12 @@ public class Equipe {
 
     public Equipe() {
         // Constructeur par défaut requis par Spring Data
+    }
+
+    public Equipe(String nomEquipe, int nombreJourPrésentiel) {
+        this.nomEquipe = nomEquipe;
+        this.nombreJourPrésentiel = nombreJourPrésentiel;
+        this.lesMembres = new ArrayList<>();
     }
 
     
@@ -60,6 +67,12 @@ public class Equipe {
 
     public List<String> getLesMembres() {
         return lesMembres;
+    }
+
+    public void addMembre(String membreId) {
+        if (!lesMembres.contains(membreId)) {
+            lesMembres.add(membreId);
+        }
     }
 
     public void setLesMembres(List<String> lesMembres) {

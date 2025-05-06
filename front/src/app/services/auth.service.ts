@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 interface LoginResponse {
   userId: string;
   equipeId: string;
-  isAdmin: boolean;
+  admin: boolean;
 }
 
 @Injectable({

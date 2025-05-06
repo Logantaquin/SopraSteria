@@ -2,11 +2,11 @@ package com.loganaxel.Controllers;
 
 import com.loganaxel.Model.Equipe;
 import com.loganaxel.Service.EquipeService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -29,4 +29,21 @@ public class EquipeController {
     public Equipe getEquipeById(@PathVariable String id) {
         return EquipeService.getEquipeById(id);
     }
+
+    @PostMapping("/addMember")
+    public Equipe addMemberToEquipe(@RequestBody AddMemberRequest request) {
+        return EquipeService.addMemberToEquipe(request.getIdEquipe(), request.getIdMembre());
+    }
+
+    @PostMapping("/ajouter")
+    public ResponseEntity<?> ajouterEquipe(@RequestBody Equipe equipe) {
+        try {
+            equipe.setLesMembres(new ArrayList<>());
+            Equipe savedEquipe = EquipeService.saveEquipe(equipe);
+            return ResponseEntity.ok(savedEquipe);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erreur lors de l'ajout de l'équipe: " + e.getMessage());
+        }
+    }
+
 }

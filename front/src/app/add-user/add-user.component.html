@@ -1,7 +1,6 @@
 <div class="top-bar">
   <nav class="nav-links">
     <a routerLink="/planning-admin">Accueil</a>
-    <a routerLink="/compte">Consulter votre compte</a>
     <a routerLink="/">Déconnexion</a>
   </nav>
 </div>
@@ -11,32 +10,36 @@
 </div>
 
 <div class="dashboard">
-
-  <!-- Conteneur principal flex pour le formulaire -->
   <div class="calendar-actions">
     <div class="calendar-wrapper">
-      <img src="assets/user.png" class="planning-image"/>
+      <img src="assets/user.png" class="planning-image" />
     </div>
 
     <div class="actions">
       <label for="mail-utilisateur">Mail de l'utilisateur</label>
-      <input id="mail-utilisateur" type="email" placeholder="Ex: utilisateur@exemple.com" />
+      <input id="mail-utilisateur" type="email" [(ngModel)]="newUser.adresseMail" name="email" placeholder="Ex: utilisateur@exemple.com" />
 
       <label for="mot-de-passe">Mot de passe</label>
-      <input id="mot-de-passe" type="password" placeholder="Mot de passe" />
+      <input id="mot-de-passe" type="password" [(ngModel)]="newUser.motDePasse" name="password" placeholder="Mot de passe" />
 
-      <label for="confirmer-mot-de-passe">Confirmer le mot de passe</label>
-      <input id="confirmer-mot-de-passe" type="password" placeholder="Confirmer mot de passe" />
+      <label>Est admin ?</label>
+      <div class="radio-group">
+        <label>
+          <input type="radio" [(ngModel)]="newUser.admin" name="admin" [value]="true" />
+          Oui
+        </label>
+        <label>
+          <input type="radio" [(ngModel)]="newUser.admin" name="admin" [value]="false" />
+          Non
+        </label>
+      </div>
 
       <label for="equipe">Équipe</label>
-      <select id="equipe">
-        <option value="equipe1">Équipe 1</option>
-        <option value="equipe2">Équipe 2</option>
-        <option value="equipe3">Équipe 3</option>
-        <option value="equipe4">Équipe 4</option>
+      <select id="equipe" [(ngModel)]="selectedEquipeId" name="equipe">
+        <option *ngFor="let equipe of equipes" [value]="equipe.id">{{ equipe.nomEquipe }}</option>
       </select>
 
-      <button>Ajouter l'utilisateur</button>
+      <button (click)="addUser()">Ajouter l'utilisateur</button>
     </div>
   </div>
 </div>
@@ -45,7 +48,6 @@
   <div class="logo-section">
     <img src="assets/sopra.png" alt="Sopra Steria" class="logo" />
   </div>
-
   <div class="triangle-section">
     <img src="assets/triangle.png" alt="Sopra Steria" class="triangle" />
   </div>

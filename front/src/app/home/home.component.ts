@@ -24,16 +24,17 @@ export class HomeComponent {
     };
 
     this.authService.login(loginData).subscribe(
-      (response: { userId: string, equipeId: string, isAdmin: boolean }) => {
+      (response: { userId: string, equipeId: string, admin: boolean }) => {
         console.log('Connexion réussie', response);
 
         // Stockage local
         localStorage.setItem('userId', response.userId);
         localStorage.setItem('equipeId', response.equipeId);
-        localStorage.setItem('isAdmin', String(response.isAdmin));
+        localStorage.setItem('isAdmin', String(response.admin));
 
         // Redirection selon le rôle
-        if (response.isAdmin) {
+        if (response.admin == true) {
+          console.log("Redirection vers admin");
           this.router.navigate(['/planning-admin']);
         } else {
           this.router.navigate(['/planning']);

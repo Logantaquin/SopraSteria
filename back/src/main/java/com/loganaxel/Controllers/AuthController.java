@@ -32,7 +32,7 @@ public class AuthController {
 
                 if (equipe != null) {
                     // Renvoi de l'utilisateur avec l'ID de l'équipe
-                    return ResponseEntity.ok(new LoginResponse(user.getId(), equipe.getId(),user.getAdmin().toString()));
+                    return ResponseEntity.ok(new LoginResponse(user.getId(), equipe.getId(),user.getAdmin()));
                 } else {
                     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Utilisateur sans équipe associée");
                 }

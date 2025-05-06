@@ -4,6 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { PlanningService } from '../services/planning.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-planning',
@@ -21,26 +22,56 @@ export class PlanningComponent implements OnInit {
     eventMouseLeave: this.onEventMouseLeave.bind(this)
   };
 
-  equipesMap: Map<string, string> = new Map(); // ID -> Nom
-  sallesMap: Map<string, string> = new Map();  // ID -> Nom
+  equipesMap: Map<string, string> = new Map();
+  sallesMap: Map<string, string> = new Map();
   tooltipEl: HTMLElement | null = null;
 
-  currentEquipeId: string = ''; // L'ID de l'équipe de l'utilisateur
+  currentEquipeId: string = '';
+  currentUserEmail: string = '';
+  currentDateFr: string = '';
+  salleDuJour: string[] = [];
 
-  constructor(private planningService: PlanningService) {}
+  constructor(
+    private planningService: PlanningService,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
-    // Supposons que l'ID de l'équipe de l'utilisateur est stocké dans le localStorage
-    this.currentEquipeId = localStorage.getItem('equipeId') || ''; // Utilise une méthode appropriée pour récupérer l'ID
+    // Formatage de la date en français
+    const today = new Date();
+    this.currentDateFr = new Intl.DateTimeFormat('fr-FR', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }).format(today);
+
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      this.userService.getUserById(userId).subscribe({
+        next: (user) => {
+          this.currentUserEmail = user?.adresseMail || 'Utilisateur inconnu';
+        },
+        error: (err) => {
+          this.currentUserEmail = 'Utilisateur inconnu';
+          console.error('Erreur lors de la récupération de l\'utilisateur:', err);
+        }
+      });
+    } else {
+      this.currentUserEmail = 'Utilisateur inconnu';
+    }
+
+    // Récupération de l'ID d'équipe
+    this.currentEquipeId = localStorage.getItem('equipeId') || '';
 
     if (this.currentEquipeId) {
-      this.loadPlanningData(); // Si on a un ID d'équipe, on charge les données
+      this.loadPlanningData(today);
     } else {
       console.error("L'ID de l'équipe n'a pas été trouvé.");
     }
   }
 
-  loadPlanningData(): void {
+  loadPlanningData(today: Date): void {
     this.planningService.getEquipes().subscribe(equipes => {
       equipes.forEach(e => this.equipesMap.set(e.id, e.nomEquipe));
 
@@ -51,6 +82,14 @@ export class PlanningComponent implements OnInit {
           const filtered = this.filterPlanningForEquipe(planning, this.currentEquipeId);
           const events = this.transformPlanningToEvents(filtered);
           this.calendarOptions.events = events;
+
+          // Salle du jour (aujourd'hui seulement)
+          const todayStr = today.toISOString().split('T')[0];
+          const todayPlanning = filtered.find(p => p.date === todayStr);
+          if (todayPlanning) {
+            this.salleDuJour = todayPlanning.affectations[this.currentEquipeId]
+              .map((a: any) => this.sallesMap.get(a.salleId) || a.salleId);
+          }
         });
       });
     });

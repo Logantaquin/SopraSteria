@@ -1,15 +1,19 @@
 <div class="top-bar">
   <nav class="nav-links">
     <a routerLink="/planning">Accueil</a>
-    <a routerLink="/compte">Consulter votre compte</a>
     <a routerLink="/">Déconnexion</a>
   </nav>
 </div>
 
 <div class="planning-info">
-  <p>Bonjour <strong>[JohnDoe]</strong> ! Vous êtes affecté aujourd’hui, à la salle <strong>[C]</strong></p>
-  <p>Nous sommes : <strong>[Lundi 31 Mars 2025]</strong></p>
+  <p>Bonjour <strong>{{ currentUserEmail }}</strong> !</p>
+  <p *ngIf="salleDuJour.length > 0">
+    Vous êtes affecté aujourd’hui, à la salle <strong>{{ salleDuJour.join(', ') }}</strong>
+  </p>
+  <p>Nous sommes : <strong>{{ currentDateFr }}</strong></p>
 </div>
+
+
 
 <div class="dashboard">
 
@@ -21,8 +25,6 @@
     </div>
 
     <div class="actions">
-      <button>Consulter votre compte</button>
-      <button>Vue journalière</button>
       <button [routerLink]="'/'">Se déconnecter</button>
     </div>
   </div>

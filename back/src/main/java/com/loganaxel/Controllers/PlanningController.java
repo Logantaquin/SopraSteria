@@ -10,9 +10,7 @@ import com.loganaxel.Repository.SalleAffectationRepository;
 import com.loganaxel.Repository.SalleRepository;
 import com.loganaxel.Service.AllocationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -39,6 +37,12 @@ public class PlanningController {
         this.allocationService = allocationService;
     }
 
+    @GetMapping
+    public List<Jour> getAllPlanning() {
+        // Retourner tous les jours dans la base de données
+        return jourRepository.findAll();
+    }
+
     @GetMapping("/generer")
     public List<Jour> genererPlanning() {
         List<Equipe> equipes = equipeRepository.findAll();
@@ -50,6 +54,21 @@ public class PlanningController {
 
         // Lancement de l'algorithme d'affectation
 
+        return allocationService.assignerEquipesAuxJours(equipes, salles, jours);
+    }
+
+    @PostMapping("/generer")
+    public List<Jour> genererPlanning(@RequestBody GenerationRequest request) {
+        // Récupérer les équipes sélectionnées
+        List<Equipe> equipes = equipeRepository.findAllById(request.getEquipeIds());
+
+        // Charger toutes les salles
+        List<Salle> salles = salleRepository.findAll();
+
+        // Générer les dates à partir des paramètres
+        List<Date> jours = genererDates(request.getDateDebut(), request.getDateFin());
+
+        // Appeler l'algorithme d'affectation
         return allocationService.assignerEquipesAuxJours(equipes, salles, jours);
     }
 
